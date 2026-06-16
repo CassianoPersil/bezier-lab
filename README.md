@@ -57,6 +57,15 @@ pnpm db:push
 node prisma/seed.js
 ```
 
+#### 🔑 Credenciais Padrão (Criadas pela Seed)
+
+- **Administrador (Admin Hub):**
+  - **E-mail:** `admin@bezierlab.com`
+  - **Senha:** `BezierAdmin2025!`
+- **Cliente Padrão (Storefront):**
+  - **E-mail:** `client@example.com`
+  - **Senha:** `client123`
+
 ### 3. Rodar os Servidores de Desenvolvimento
 Para iniciar todos os projetos em paralelo:
 ```bash
@@ -83,3 +92,13 @@ pnpm dev:storefront  # Inicia apenas o Storefront
 - `pnpm type-check`: Executa a checagem de tipos TypeScript em todos os pacotes.
 - `pnpm lint`: Executa a análise estática de código (ESLint) em todo o workspace.
 - `pnpm clean`: Limpa caches do Turbo e diretórios gerados.
+
+---
+
+## 📈 Histórico de Melhorias Recentes
+
+- **design(ui):** Reposicionamento do botão toggle de recolhimento da sidebar para o topo (alinhado verticalmente com o logo/cabeçalho) no pacote `bezier-ui`.
+- **feat(admin-hub):** Criação das rotas e telas de Produtos, Clientes e Configurações para evitar erros 404 ao navegar.
+- **refactor(admin-hub):** Ativação de navegação dinâmica via `useRouter` nos itens de menu da sidebar administrativa.
+- **refactor(ui):** Refino de tema com suporte semântico e dinâmico (Light/Dark mode) para os componentes `Card` e `Tabs`.
+- **docs:** Atualização do `README.md` com guia de credenciais padrão de testes do banco e documentação de pacotes.
