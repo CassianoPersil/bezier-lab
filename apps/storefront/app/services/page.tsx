@@ -171,7 +171,7 @@ export default function ServicesPage() {
                   : 'Submit your CAD files (STL, STEP, IGES) and we will provide a manufacturing analysis and quote within 24 hours.'}
               </p>
               <Button variant="primary" size="lg" rightIcon={<ArrowRight className="h-4 w-4" />} asChild>
-                <Link href="/contact">
+                <Link href="/">
                   {isPt ? 'Solicitar Orçamento' : 'Request a Quote'}
                 </Link>
               </Button>

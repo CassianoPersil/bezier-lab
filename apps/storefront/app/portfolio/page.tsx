@@ -216,7 +216,7 @@ export default function PortfolioPage() {
                   : 'We can manufacture your project using the exact same rigid quality standards shown in our portfolio.'}
               </p>
               <Button variant="primary" size="lg" rightIcon={<ArrowRight className="h-4 w-4" />} asChild>
-                <Link href="/contact">
+                <Link href="/">
                   {isPt ? 'Iniciar Meu Projeto' : 'Start My Project'}
                 </Link>
               </Button>

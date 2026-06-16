@@ -18,7 +18,7 @@ export function Footer() {
       { label: t('footer.aboutUs'), href: '/about' },
       { label: t('nav.portfolio'), href: '/portfolio' },
       { label: t('nav.services'), href: '/services' },
-      { label: t('nav.contact'), href: '/contact' },
+      { label: t('nav.contact'), href: '/' },
     ],
     [t('footer.services')]: [
       { label: t('footer.fdm'), href: '/services#fdm' },
