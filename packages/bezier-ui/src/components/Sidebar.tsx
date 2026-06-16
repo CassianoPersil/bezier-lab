@@ -58,7 +58,7 @@ export function Sidebar({ defaultCollapsed = false, className, children }: Sideb
         <button
           onClick={() => setCollapsed(!collapsed)}
           className={cn(
-            'absolute bottom-4 right-[-12px] z-10',
+            'absolute top-[16px] right-[-12px] z-10',
             'h-6 w-6 rounded-full flex items-center justify-center',
             'bg-surface-2 border border-border text-ink-muted',
             'hover:bg-surface-3 hover:text-ink hover:border-accent/30',
