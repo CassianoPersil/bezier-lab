@@ -41,17 +41,19 @@ export function Sidebar({ defaultCollapsed = false, className, children }: Sideb
 
   return (
     <SidebarContext.Provider value={{ collapsed, setCollapsed }}>
-      <motion.aside
-        animate={{ width: collapsed ? 64 : 240 }}
-        transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className={cn(
-          'relative flex flex-col h-screen shrink-0',
-          'bg-surface-0 border-r border-border',
-          'overflow-hidden',
-          className
-        )}
-      >
-        {children}
+      <div className="relative h-screen shrink-0">
+        <motion.aside
+          animate={{ width: collapsed ? 64 : 240 }}
+          transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className={cn(
+            'flex flex-col h-full',
+            'bg-surface-0 border-r border-border',
+            'overflow-hidden',
+            className
+          )}
+        >
+          {children}
+        </motion.aside>
         {/* Collapse toggle */}
         <button
           onClick={() => setCollapsed(!collapsed)}
@@ -71,7 +73,7 @@ export function Sidebar({ defaultCollapsed = false, className, children }: Sideb
             <ChevronLeft className="h-3.5 w-3.5" />
           )}
         </button>
-      </motion.aside>
+      </div>
     </SidebarContext.Provider>
   )
 }

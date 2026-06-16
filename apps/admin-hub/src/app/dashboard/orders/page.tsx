@@ -78,12 +78,12 @@ function OrderCard({
       <Card variant="default" padding="sm" hoverable className="mb-3 cursor-default">
         <CardContent>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-[#636b76]">{order.orderNumber}</span>
-            <span className="text-xs text-[#9da3ae] font-medium">${order.amount.toFixed(2)}</span>
+            <span className="text-xs font-mono text-ink-muted">{order.orderNumber}</span>
+            <span className="text-xs text-ink-subtle font-medium">${order.amount.toFixed(2)}</span>
           </div>
-          <p className="text-sm font-semibold text-[#e8eaed] mb-0.5">{order.client}</p>
-          <p className="text-xs text-[#636b76] mb-3 leading-relaxed">{order.product}</p>
-          <p className="text-xs text-[#3d4148] mb-3">{order.date}</p>
+          <p className="text-sm font-semibold text-ink mb-0.5">{order.client}</p>
+          <p className="text-xs text-ink-muted mb-3 leading-relaxed">{order.product}</p>
+          <p className="text-xs text-ink-disabled mb-3">{order.date}</p>
           {next && (
             <Button
               variant="ghost"
@@ -114,9 +114,9 @@ export default function OrdersPage() {
   return (
     <div className="p-8 max-w-screen-2xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <p className="text-xs text-[#636b76] uppercase tracking-widest mb-1">Management</p>
-        <h1 className="text-3xl font-bold text-[#e8eaed] tracking-tight">Orders</h1>
-        <p className="text-sm text-[#636b76] mt-1">{orders.length} total orders</p>
+        <p className="text-xs text-ink-muted uppercase tracking-widest mb-1">Management</p>
+        <h1 className="text-3xl font-bold text-ink tracking-tight">Orders</h1>
+        <p className="text-sm text-ink-muted mt-1">{orders.length} total orders</p>
       </motion.div>
 
       {/* Kanban board */}
@@ -132,9 +132,9 @@ export default function OrdersPage() {
               className="min-w-[220px]"
             >
               {/* Column header */}
-              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#1e2124]">
+              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
                 <col.icon className="h-4 w-4" style={{ color: col.color }} />
-                <span className="text-sm font-semibold text-[#e8eaed]">{col.label}</span>
+                <span className="text-sm font-semibold text-ink">{col.label}</span>
                 <span
                   className="ml-auto text-xs font-medium px-1.5 py-0.5 rounded-full"
                   style={{
@@ -150,7 +150,7 @@ export default function OrdersPage() {
               {/* Cards */}
               <div>
                 {colOrders.length === 0 ? (
-                  <div className="text-xs text-[#3d4148] text-center py-8 border border-dashed border-[#1e2124] rounded-xl">
+                  <div className="text-xs text-ink-disabled text-center py-8 border border-dashed border-border rounded-xl">
                     No orders
                   </div>
                 ) : (

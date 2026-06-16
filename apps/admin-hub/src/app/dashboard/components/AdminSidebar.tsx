@@ -5,7 +5,7 @@
 // =============================================================================
 
 import React from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
   Sidebar,
@@ -54,6 +54,7 @@ export function AdminSidebar({
   user?: { name?: string | null; email?: string | null; role?: string }
 }) {
   const pathname = usePathname()
+  const router = useRouter()
   const { t } = useLanguage()
   const { collapsed } = useSidebar()
 
@@ -70,7 +71,7 @@ export function AdminSidebar({
             icon={<item.icon className="h-4 w-4" />}
             label={t(labelKeys[item.label] || item.label)}
             active={pathname === item.href}
-            onClick={() => {}}
+            onClick={() => router.push(item.href)}
           />
         ))}
       </SidebarSection>
@@ -82,7 +83,7 @@ export function AdminSidebar({
             icon={<item.icon className="h-4 w-4" />}
             label={t(labelKeys[item.label] || item.label)}
             active={pathname.startsWith(item.href)}
-            onClick={() => {}}
+            onClick={() => router.push(item.href)}
           />
         ))}
       </SidebarSection>
@@ -94,7 +95,7 @@ export function AdminSidebar({
             icon={<item.icon className="h-4 w-4" />}
             label={t(labelKeys[item.label] || item.label)}
             active={pathname.startsWith(item.href)}
-            onClick={() => {}}
+            onClick={() => router.push(item.href)}
           />
         ))}
       </SidebarSection>
