@@ -28,7 +28,29 @@ import {
   Settings,
   LogOut,
   Box,
+  Globe,
+  ShoppingBag,
+  Sparkles,
 } from 'lucide-react'
+
+function getExternalUrl(app: 'storefront' | 'catalog' | 'design-system') {
+  if (typeof window === 'undefined') return ''
+  const hostname = window.location.hostname
+  const protocol = window.location.protocol
+
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    if (app === 'storefront') return `${protocol}//localhost:3000`
+    if (app === 'catalog') return `${protocol}//localhost:3000/portal/products`
+    if (app === 'design-system') return `${protocol}//localhost:3002`
+  }
+
+  // Production - assume subdomains based on the domain (e.g. if admin is admin.bezierlab.com, storefront is bezierlab.com, design-system is design.bezierlab.com)
+  const baseDomain = hostname.replace(/^admin\./, '')
+  if (app === 'storefront') return `${protocol}//${baseDomain}`
+  if (app === 'catalog') return `${protocol}//${baseDomain}/portal/products`
+  if (app === 'design-system') return `${protocol}//design.${baseDomain}`
+  return ''
+}
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -98,6 +120,24 @@ export function AdminSidebar({
             onClick={() => router.push(item.href)}
           />
         ))}
+      </SidebarSection>
+
+      <SidebarSection title={t('admin.section.shortcuts')}>
+        <SidebarItem
+          icon={<Globe className="h-4 w-4" />}
+          label={t('admin.nav.storefront')}
+          onClick={() => window.open(getExternalUrl('storefront'), '_blank')}
+        />
+        <SidebarItem
+          icon={<ShoppingBag className="h-4 w-4" />}
+          label={t('admin.nav.catalog')}
+          onClick={() => window.open(getExternalUrl('catalog'), '_blank')}
+        />
+        <SidebarItem
+          icon={<Sparkles className="h-4 w-4" />}
+          label={t('admin.nav.ds')}
+          onClick={() => window.open(getExternalUrl('design-system'), '_blank')}
+        />
       </SidebarSection>
 
       <SidebarFooter>

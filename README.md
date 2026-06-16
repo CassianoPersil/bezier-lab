@@ -71,10 +71,47 @@ Para iniciar todos os projetos em paralelo:
 ```bash
 pnpm dev
 ```
-Cada aplicação subirá em uma porta específica:
-- 💻 **Storefront**: `http://localhost:3000`
-- ⚙️ **Admin Hub**: `http://localhost:3001`
-- 🎨 **Design System**: `http://localhost:3002`
+Cada aplicação subirá em uma porta específica com as seguintes rotas principais:
+- 💻 **Storefront** (`http://localhost:3000`):
+  - `/` — Landing Page de alta conversão
+  - `/quote` — Formulário interativo para cotações e upload de modelos 3D (CAD)
+  - `/portal/products` — Catálogo público de peças/produtos para clientes finais
+- ⚙️ **Admin Hub** (`http://localhost:3001`):
+  - `/dashboard` — Painel administrativo principal de controle
+  - `/dashboard/inventory` — Controle de estoque e inventário
+  - `/dashboard/products` — Gerenciamento e publicação de produtos
+  - `/dashboard/orders` — Acompanhamento e atualização de pedidos e status
+  - `/dashboard/clients` — Banco de dados de clientes cadastrados
+  - `/dashboard/settings` — Configurações gerais da aplicação
+- 🎨 **Design System** (`http://localhost:3002`):
+  - `/` — Documentação e playground dos componentes e tokens da biblioteca Bézier UI
+
+---
+
+## 🌐 Implantação e Mapeamento de Domínio no Vercel
+
+Por ser um monorepo estruturado com Turborepo e pnpm, a melhor prática na **Vercel** é criar **3 projetos separados**, todos vinculados ao mesmo repositório do GitHub, porém apontando para diretórios raiz e domínios distintos:
+
+### 1. Storefront (Loja & Landing Page)
+- **Diretório Raiz (Root Directory):** `apps/storefront`
+- **Comando de Build:** `next build`
+- **Domínio Principal:** `seudominio.com` (ou `www.seudominio.com`)
+
+### 2. Admin Hub (Painel de Administração)
+- **Diretório Raiz (Root Directory):** `apps/admin-hub`
+- **Comando de Build:** `prisma generate && next build`
+- **Variáveis de Ambiente:** Adicione as chaves necessárias (ex: `DATABASE_URL`, `AUTH_SECRET`, `NEXTAUTH_URL`).
+- **Domínio Principal:** `admin.seudominio.com`
+
+### 3. Design System (Documentação Bézier UI)
+- **Diretório Raiz (Root Directory):** `apps/design-system`
+- **Comando de Build:** `next build`
+- **Domínio Principal:** `design.seudominio.com`
+
+> [!NOTE]
+> Ao configurar cada projeto no Vercel, certifique-se de que o **pnpm** está selecionado como gerenciador de pacotes padrão e que o Vercel automaticamente detecte a raiz do workspace para fazer o cache correto das dependências.
+
+---
 
 Para iniciar uma aplicação específica:
 ```bash
@@ -97,8 +134,7 @@ pnpm dev:storefront  # Inicia apenas o Storefront
 
 ## 📈 Histórico de Melhorias Recentes
 
-- **design(ui):** Reposicionamento do botão toggle de recolhimento da sidebar para o topo (alinhado verticalmente com o logo/cabeçalho) no pacote `bezier-ui`.
-- **feat(admin-hub):** Criação das rotas e telas de Produtos, Clientes e Configurações para evitar erros 404 ao navegar.
-- **refactor(admin-hub):** Ativação de navegação dinâmica via `useRouter` nos itens de menu da sidebar administrativa.
-- **refactor(ui):** Refino de tema com suporte semântico e dinâmico (Light/Dark mode) para os componentes `Card` e `Tabs`.
-- **docs:** Atualização do `README.md` com guia de credenciais padrão de testes do banco e documentação de pacotes.
+- **feat(storefront):** Reestruturação de rotas públicas. A Landing Page agora é servida em `/` e o formulário de orçamento foi movido para `/quote`.
+- **fix(storefront):** Correção de cores estáticas e hexadecimais rígidos na página de catálogo de produtos, melhorando drasticamente o suporte e a legibilidade no Light Mode usando tokens dinâmicos.
+- **feat(admin-hub):** Adicionado atalhos dinâmicos na barra lateral do painel (`Atalhos` -> `Ir para a Loja`, `Ver Catálogo`, `Design System`) que resolvem para as portas corretas localmente e subdomínios em produção.
+- **fix(admin-hub):** Ajuste do script de build do admin-hub no package.json para rodar `prisma generate` de forma automática na Vercel, solucionando erros de inicialização de cliente.

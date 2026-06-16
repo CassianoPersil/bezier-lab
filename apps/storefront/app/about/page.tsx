@@ -156,7 +156,7 @@ export default function AboutPage() {
                   : 'Talk to our technical team of engineers and designers to optimize your parts before printing.'}
               </p>
               <Button variant="primary" size="lg" rightIcon={<ArrowRight className="h-4 w-4" />} asChild>
-                <Link href="/">
+                <Link href="/quote">
                   {isPt ? 'Iniciar Projeto' : 'Start Project'}
                 </Link>
               </Button>

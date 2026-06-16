@@ -153,6 +153,10 @@ const translations: Record<Language, Record<string, string>> = {
     'ds.typography.title': 'Tipografia — Inter',
     'ds.components.title': 'Componentes',
     'ds.components.browseAll': 'Navegar por todos',
+    'admin.section.shortcuts': 'Atalhos',
+    'admin.nav.storefront': 'Ir para a Loja',
+    'admin.nav.catalog': 'Ver Catálogo',
+    'admin.nav.ds': 'Design System',
   },
   en: {
     'nav.services': 'Services',
@@ -296,6 +300,10 @@ const translations: Record<Language, Record<string, string>> = {
     'ds.typography.title': 'Typography — Inter',
     'ds.components.title': 'Components',
     'ds.components.browseAll': 'Browse all',
+    'admin.section.shortcuts': 'Shortcuts',
+    'admin.nav.storefront': 'Go to Storefront',
+    'admin.nav.catalog': 'View Catalog',
+    'admin.nav.ds': 'Design System',
   }
 }
 

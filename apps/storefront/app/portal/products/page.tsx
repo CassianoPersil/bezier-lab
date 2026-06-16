@@ -73,9 +73,9 @@ function ProductCard({ product }: { product: typeof mockProducts[0] }) {
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
       <Card variant="default" padding="none" className="overflow-hidden group hover:border-[rgba(0,240,255,0.2)] transition-all duration-200 h-full flex flex-col">
         {/* Thumbnail */}
-        <div className="h-48 bg-[#0f1011] relative overflow-hidden">
+        <div className="h-48 bg-canvas-deep relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,240,255,0.05)_0%,transparent_70%)] flex items-center justify-center">
-            <Package className="h-16 w-16 text-[#1e2124] group-hover:text-[rgba(0,240,255,0.2)] transition-colors" strokeWidth={1} />
+            <Package className="h-16 w-16 text-ink-disabled/20 group-hover:text-accent/20 transition-colors" strokeWidth={1} />
           </div>
           <div className="absolute top-3 left-3">
             <Badge variant="default" size="sm">{product.category}</Badge>
@@ -90,10 +90,10 @@ function ProductCard({ product }: { product: typeof mockProducts[0] }) {
         {/* Content */}
         <CardContent>
           <div className="p-5 flex flex-col flex-1">
-            <h3 className="text-base font-semibold text-[#e8eaed] mb-1.5 group-hover:text-[#00F0FF] transition-colors">
+            <h3 className="text-base font-semibold text-ink mb-1.5 group-hover:text-accent transition-colors">
               {product.name}
             </h3>
-            <p className="text-sm text-[#636b76] leading-relaxed mb-4 flex-1">
+            <p className="text-sm text-ink-subtle leading-relaxed mb-4 flex-1">
               {product.description}
             </p>
 
@@ -106,8 +106,8 @@ function ProductCard({ product }: { product: typeof mockProducts[0] }) {
             {/* Price and CTA */}
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-2xl font-bold text-[#e8eaed]">${product.price.toFixed(2)}</p>
-                <p className="text-xs text-[#636b76]">{product.stock} in stock</p>
+                <p className="text-2xl font-bold text-ink">${product.price.toFixed(2)}</p>
+                <p className="text-xs text-ink-muted">{product.stock} in stock</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="View details">
@@ -146,10 +146,10 @@ export default function PortalProductsPage() {
       <main className="min-h-screen pt-24 pb-32">
         <div className="max-w-screen-xl mx-auto px-6">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs text-[#636b76] mb-8">
-            <Link href="/portal" className="hover:text-[#9da3ae] transition-colors">Portal</Link>
+          <div className="flex items-center gap-2 text-xs text-ink-muted mb-8">
+            <Link href="/portal" className="hover:text-ink transition-colors">Portal</Link>
             <span>/</span>
-            <span className="text-[#9da3ae]">Products</span>
+            <span className="text-ink-subtle">Products</span>
           </div>
 
           {/* Header */}
@@ -158,10 +158,10 @@ export default function PortalProductsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-10"
           >
-            <h1 className="text-4xl font-bold tracking-tight text-[#e8eaed] mb-3">
+            <h1 className="text-4xl font-bold tracking-tight text-ink mb-3">
               Product Catalog
             </h1>
-            <p className="text-base text-[#636b76]">
+            <p className="text-base text-ink-subtle">
               Browse our available 3D printed components and place orders.
             </p>
           </motion.div>
@@ -183,10 +183,10 @@ export default function PortalProductsPage() {
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={[
-                    'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-150',
+                    'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 border',
                     activeCategory === cat
-                      ? 'bg-[rgba(0,240,255,0.1)] text-[#00F0FF] border border-[rgba(0,240,255,0.3)]'
-                      : 'text-[#636b76] border border-[#1e2124] hover:border-[#2a2e33] hover:text-[#9da3ae]',
+                      ? 'bg-accent/10 text-accent border-accent/30'
+                      : 'bg-surface-1 text-ink-muted border-border hover:border-border-strong hover:text-ink',
                   ].join(' ')}
                 >
                   {cat}
@@ -208,7 +208,7 @@ export default function PortalProductsPage() {
               </motion.div>
             ))}
             {filtered.length === 0 && (
-              <div className="col-span-full text-center py-20 text-[#636b76]">
+              <div className="col-span-full text-center py-20 text-ink-muted">
                 <Package className="h-12 w-12 mx-auto mb-4 opacity-30" strokeWidth={1} />
                 <p className="text-sm">No products found. Try a different search.</p>
               </div>

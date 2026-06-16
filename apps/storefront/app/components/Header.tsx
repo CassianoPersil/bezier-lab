@@ -21,7 +21,7 @@ export function Header() {
     { label: t('nav.services'), href: '/services' },
     { label: t('nav.portfolio'), href: '/portfolio' },
     { label: t('nav.about'), href: '/about' },
-    { label: t('nav.contact'), href: '/' },
+    { label: t('nav.contact'), href: '/quote' },
   ]
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export function Header() {
               {t('nav.portal')}
             </Link>
             <Button variant="primary" size="sm" asChild>
-              <Link href="/">{t('nav.quote')}</Link>
+              <Link href="/quote">{t('nav.quote')}</Link>
             </Button>
           </div>
 
@@ -140,7 +140,7 @@ export function Header() {
                   {t('nav.portal')}
                 </Link>
                 <Button variant="primary" size="md" asChild>
-                  <Link href="/" onClick={() => setMobileOpen(false)}>{t('nav.quote')}</Link>
+                  <Link href="/quote" onClick={() => setMobileOpen(false)}>{t('nav.quote')}</Link>
                 </Button>
               </div>
             </nav>
