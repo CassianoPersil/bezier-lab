@@ -1,0 +1,91 @@
+// =============================================================================
+// PRISMA SCHEMA — Bézier Lab Admin Hub
+// Using SQLite (enums not supported — stored as String)
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Auth — Role: "ADMIN" | "CLIENT"
+// ---------------------------------------------------------------------------
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  role          String    @default("CLIENT")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  orders        Order[]
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// Products & Inventory
+// status: "DRAFT" | "PUBLISHED" | "ARCHIVED"
+// ---------------------------------------------------------------------------
+model Product {
+  id          String     @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  sku         String?    @unique
+  stock       Int        @default(0)
+  status      String     @default("DRAFT")
+  imageUrl    String?
+  modelUrl    String?
+  category    String?
+  tags        String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  orderItems  OrderItem[]
+
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// Orders
+// status: "PENDING" | "IN_PRODUCTION" | "QUALITY_CHECK" | "READY" | "DELIVERED" | "CANCELLED"
+// ---------------------------------------------------------------------------
+model Order {
+  id          String    @id @default(cuid())
+  orderNumber String    @unique
+  userId      String
+  status      String    @default("PENDING")
+  totalAmount Float
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+  items       OrderItem[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  unitPrice Float
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+}

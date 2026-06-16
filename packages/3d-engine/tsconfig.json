@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@bezier-lab/ui": ["../bezier-ui/src"]
+    }
+  },
+  "include": ["src/**/*"]
+}

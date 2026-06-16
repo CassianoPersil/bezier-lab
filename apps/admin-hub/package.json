@@ -1,0 +1,42 @@
+{
+  "name": "admin-hub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@bezier-lab/ui": "workspace:*",
+    "@bezier-lab/tokens": "workspace:*",
+    "@auth/prisma-adapter": "^1.5.0",
+    "@prisma/client": "^5.15.0",
+    "bcryptjs": "^2.4.3",
+    "framer-motion": "^11.2.0",
+    "lucide-react": "^0.394.0",
+    "next": "14.2.4",
+    "next-auth": "^5.0.0-beta.19",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.52.0",
+    "zod": "^3.23.8",
+    "@hookform/resolvers": "^3.6.0",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "prisma": "^5.15.0",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.4.5"
+  }
+}
