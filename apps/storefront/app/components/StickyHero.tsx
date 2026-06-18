@@ -91,7 +91,7 @@ export function StickyHero() {
   const videoOpacity = 1
 
   return (
-    <div ref={containerRef} className="relative h-[280vh] w-full" id="hero">
+    <div ref={containerRef} className="relative h-[400vh] w-full" id="hero">
       {/* Sticky Content Wrapper */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-canvas select-none">
         
