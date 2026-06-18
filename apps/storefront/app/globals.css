@@ -7,6 +7,7 @@
 :root {
   /* LIGHT MODE (Padrão — Alto Contraste para a11y) */
   --color-bg-canvas: #f9fafb;
+  --color-bg-canvas-rgb: 249, 250, 251;
   --color-bg-canvas-deep: #f3f4f6;
   --color-bg-surface-0: #ffffff;
   --color-bg-surface-1: #ffffff;
@@ -43,6 +44,7 @@
 .dark {
   /* DARK MODE (Opcional) */
   --color-bg-canvas: #0d0d0e;
+  --color-bg-canvas-rgb: 13, 13, 14;
   --color-bg-canvas-deep: #010102;
   --color-bg-surface-0: #0f1011;
   --color-bg-surface-1: #141517;
@@ -141,3 +143,13 @@
 
 .animate-float { animation: float 4s ease-in-out infinite; }
 .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 35s linear infinite;
+}
+

@@ -9,6 +9,10 @@ import React, { useRef } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Header } from './components/Header'
+import { StickyHero } from './components/StickyHero'
+import { LogoTicker } from './components/LogoTicker'
+import { HowItWorksScroll } from './components/HowItWorksScroll'
+import { BrazilCoverageScroll } from './components/BrazilCoverageScroll'
 import { Footer } from './components/Footer'
 import { Button, Badge, Card, CardContent, useLanguage } from '@bezier-lab/ui'
 import {
@@ -26,173 +30,6 @@ import {
   Settings,
   Globe,
 } from 'lucide-react'
-
-// ---------------------------------------------------------------------------
-// Hero Section
-// ---------------------------------------------------------------------------
-function HeroSection() {
-  const { t } = useLanguage()
-
-  return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-16" id="hero">
-      {/* Background layers */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,var(--color-accent-glow)_0%,transparent_70%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_80%_50%,rgba(0,240,255,0.02)_0%,transparent_70%)]" />
- 
-      {/* Grid background */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-        }}
-      />
-
-      {/* Top glow line */}
-      <div className="absolute top-16 inset-x-0 glow-line opacity-60" />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-screen-xl mx-auto px-6 py-32 grid lg:grid-cols-2 gap-16 items-center w-full">
-        {/* Left — Text */}
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/8 border border-accent/20 text-xs font-medium text-accent mb-8">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              {t('hero.badge')}
-            </div>
-
-            <h1 className="text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6">
-              <span className="text-gradient-brand">{t('hero.title.1')}</span>
-              <br />
-              <span className="text-ink">{t('hero.title.2')}</span>
-              <br />
-              <span className="text-gradient-cyan">{t('hero.title.3')}</span>
-            </h1>
-
-            <p className="text-lg text-ink-subtle leading-relaxed mb-10 max-w-lg">
-              {t('hero.desc')}
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button
-                  id="hero-cta-primary"
-                  variant="primary"
-                  size="xl"
-                  rightIcon={<ArrowRight className="h-5 w-5" />}
-                  asChild
-                >
-                  <Link href="/quote">{t('hero.cta.primary')}</Link>
-                </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button
-                  id="hero-cta-secondary"
-                  variant="outline"
-                  size="xl"
-                  asChild
-                >
-                  <Link href="/portfolio">{t('hero.cta.secondary')}</Link>
-                </Button>
-              </motion.div>
-            </div>
-
-            {/* Trust indicators */}
-            <div className="flex flex-wrap items-center gap-6 mt-10">
-              {[
-                t('hero.trust.1'),
-                t('hero.trust.2'),
-                t('hero.trust.3'),
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-1.5 text-sm text-ink-muted">
-                  <CheckCircle2 className="h-4 w-4 text-success" />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right — 3D Scene placeholder */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, rotateY: -10 }}
-          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative hidden lg:block"
-        >
-          <div className="relative h-[520px] rounded-2xl overflow-hidden border border-border bg-surface-0 shadow-lg">
-            {/* Placeholder gradient for SSR */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--color-accent-glow)_0%,transparent_70%)] flex items-center justify-center">
-              <div className="text-center">
-                <div className="h-32 w-32 mx-auto mb-6 relative animate-float">
-                  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="120" height="120" rx="24" fill="var(--color-bg-canvas-deep)" />
-                    <rect x="0.5" y="0.5" width="119" height="119" rx="23.5" stroke="var(--color-border-default)" />
-                    {/* Animated Bézier curve */}
-                    <path d="M20 20 C20 20, 60 20, 80 60 C100 100, 100 100, 60 100 C20 100, 20 100, 20 100" stroke="var(--color-accent)" strokeWidth="3" strokeLinecap="round" fill="none" />
-                    <path d="M20 60 C20 60, 80 50, 90 60 C100 70, 80 70, 20 60" stroke="var(--color-border-strong)" strokeWidth="2" strokeLinecap="round" fill="none" />
-                    <circle cx="20" cy="20" r="5" fill="var(--color-accent)" />
-                    <circle cx="90" cy="60" r="5" fill="var(--color-accent)" />
-                    <circle cx="20" cy="100" r="5" fill="var(--color-accent)" />
-                  </svg>
-                </div>
-                <p className="text-sm text-ink-muted">{t('hero.scene')}</p>
-                <p className="text-xs text-ink-disabled">Powered by Three.js</p>
-              </div>
-            </div>
-
-            {/* Scan line effect */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-              <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent animate-[scan-line_4s_linear_infinite]" />
-            </div>
-
-            {/* Corner glow */}
-            <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
-            <div className="absolute -bottom-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
-          </div>
-
-          {/* Floating stat badge */}
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -left-6 top-1/4 bg-surface-1 border border-border-strong rounded-xl p-4 shadow-md"
-          >
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-lg bg-accent/10 flex items-center justify-center">
-                <Package className="h-4 w-4 text-accent" />
-              </div>
-              <div>
-                <p className="text-lg font-bold text-ink">10,000+</p>
-                <p className="text-xs text-ink-muted">{t('hero.badge.parts')}</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Floating time badge */}
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-            className="absolute -right-6 bottom-1/4 bg-surface-1 border border-border-strong rounded-xl p-4 shadow-md"
-          >
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-lg bg-success/10 flex items-center justify-center">
-                <Clock className="h-4 w-4 text-success" />
-              </div>
-              <div>
-                <p className="text-lg font-bold text-ink">48h avg</p>
-                <p className="text-xs text-ink-muted">{t('hero.badge.time')}</p>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  )
-}
 
 // ---------------------------------------------------------------------------
 // Stats Section
@@ -546,7 +383,10 @@ export default function LandingPage() {
     <>
       <Header />
       <main>
-        <HeroSection />
+        <StickyHero />
+        <LogoTicker />
+        <HowItWorksScroll />
+        <BrazilCoverageScroll />
         <StatsSection />
         <FeaturesSection />
         <PortfolioSection />
