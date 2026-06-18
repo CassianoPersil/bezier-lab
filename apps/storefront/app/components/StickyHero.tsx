@@ -226,7 +226,7 @@ export function StickyHero() {
           </div>
 
           {/* RIGHT COLUMN: Stage 2 and Stage 3 */}
-          <div className="w-[42%] max-w-md pl-4 relative h-[500px] flex items-center ml-auto mr-12 lg:mr-16">
+          <div className="w-[36%] max-w-sm pl-4 relative h-[500px] flex items-center ml-auto mr-4 lg:mr-8">
             
             {/* Stage 2 (Materials) */}
             <motion.div
