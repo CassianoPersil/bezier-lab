@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Badge, Button, Card, CardContent } from '@bezier-lab/ui'
+import { Badge, Button, Card, CardContent, useLanguage } from '@bezier-lab/ui'
 import { Clock, Printer, CheckCircle2, Truck, PackageCheck, XCircle, ArrowRight } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -66,6 +66,7 @@ function OrderCard({
   onAdvance: (id: string, status: OrderStatus) => void
 }) {
   const next = nextStatus[order.status]
+  const { language } = useLanguage()
 
   return (
     <motion.div
@@ -79,7 +80,11 @@ function OrderCard({
         <CardContent>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-mono text-ink-muted">{order.orderNumber}</span>
-            <span className="text-xs text-ink-subtle font-medium">${order.amount.toFixed(2)}</span>
+            <span className="text-xs text-ink-subtle font-medium">
+              {language === 'pt' 
+                ? `R$ ${order.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                : `$${order.amount.toFixed(2)}`}
+            </span>
           </div>
           <p className="text-sm font-semibold text-ink mb-0.5">{order.client}</p>
           <p className="text-xs text-ink-muted mb-3 leading-relaxed">{order.product}</p>

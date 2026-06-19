@@ -92,7 +92,7 @@ export function DashboardContent({
     recentOrders: any[]
   }
 }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const greeting = () => {
     const h = new Date().getHours()
@@ -166,7 +166,9 @@ export function DashboardContent({
                     </Badge>
                   </TableTd>
                   <TableTd className="text-ink font-medium">
-                    ${order.totalAmount.toFixed(2)}
+                    {language === 'pt' 
+                      ? `R$ ${order.totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                      : `$${order.totalAmount.toFixed(2)}`}
                   </TableTd>
                   <TableTd className="text-xs text-ink-muted">
                     {new Date(order.createdAt).toLocaleDateString()}

@@ -190,6 +190,13 @@ export default function PortalProductsPage() {
   const cartTotal = cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0)
   const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0)
 
+  const formatPrice = (value: number) => {
+    if (language === 'pt') {
+      return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    }
+    return `$${value.toFixed(2)}`
+  }
+
   return (
     <>
       <Header />
@@ -316,7 +323,7 @@ export default function PortalProductsPage() {
                         {/* Price and CTA */}
                         <div className="flex items-center justify-between mt-auto border-t border-border/30 pt-4">
                           <div>
-                            <p className="text-xl font-bold text-ink">${product.price.toFixed(2)}</p>
+                            <p className="text-xl font-bold text-ink">{formatPrice(product.price)}</p>
                             <p className="text-[10px] text-ink-muted">{product.stock} {language === 'pt' ? 'disponíveis' : 'in stock'}</p>
                           </div>
                           <div className="flex gap-1.5">
@@ -377,7 +384,7 @@ export default function PortalProductsPage() {
                   <div key={item.product.id} className="flex items-center justify-between border-b border-border/30 pb-3">
                     <div className="flex-1 min-w-0 pr-4">
                       <h4 className="text-sm font-semibold text-ink truncate">{item.product.name}</h4>
-                      <p className="text-xs text-accent font-semibold mt-0.5">${item.product.price.toFixed(2)}</p>
+                      <p className="text-xs text-accent font-semibold mt-0.5">{formatPrice(item.product.price)}</p>
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
@@ -414,7 +421,7 @@ export default function PortalProductsPage() {
                 
                 <div className="flex justify-between items-center pt-4 border-t border-border font-bold">
                   <span className="text-sm text-ink">{language === 'pt' ? 'Total:' : 'Subtotal:'}</span>
-                  <span className="text-lg text-accent">${cartTotal.toFixed(2)}</span>
+                  <span className="text-lg text-accent">{formatPrice(cartTotal)}</span>
                 </div>
               </div>
             )}
@@ -472,7 +479,7 @@ export default function PortalProductsPage() {
                 </div>
                 <div>
                   <span className="text-ink-muted block uppercase tracking-wider">{language === 'pt' ? 'Preço Unitário:' : 'Unit Price:'}</span>
-                  <span className="text-accent font-bold mt-1 block">${selectedProduct.price.toFixed(2)}</span>
+                  <span className="text-accent font-bold mt-1 block">{formatPrice(selectedProduct.price)}</span>
                 </div>
               </div>
             </DialogBody>

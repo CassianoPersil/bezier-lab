@@ -29,7 +29,7 @@ const initialProducts = [
 export default function ProductsPage() {
   const [products] = useState(initialProducts)
   const [search, setSearch] = useState('')
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const filtered = products.filter(
     (p) =>
@@ -109,7 +109,11 @@ export default function ProductsPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex items-center justify-between border-t border-border pt-4">
-                  <span className="text-lg font-bold text-ink">${product.price.toFixed(2)}</span>
+                  <span className="text-lg font-bold text-ink">
+                    {language === 'pt' 
+                      ? `R$ ${product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                      : `$${product.price.toFixed(2)}`}
+                  </span>
                   <div className="flex items-center gap-2">
                     <Button variant="ghost" size="sm" leftIcon={<Edit2 className="h-3.5 w-3.5" />}>
                       Editar

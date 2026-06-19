@@ -55,7 +55,7 @@ function ProductRow({
   onEdit: (p: any) => void
   onDelete: (id: string) => void
 }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   return (
     <TableRow clickable>
@@ -71,7 +71,11 @@ function ProductRow({
         </div>
       </TableTd>
       <TableTd>{product.category}</TableTd>
-      <TableTd className="text-ink font-medium">${product.price.toFixed(2)}</TableTd>
+      <TableTd className="text-ink font-medium">
+        {language === 'pt' 
+          ? `R$ ${product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `$${product.price.toFixed(2)}`}
+      </TableTd>
       <TableTd>
         <span className={product.stock === 0 ? 'text-danger' : 'text-ink'}>
           {product.stock === 0 ? t('admin.inventory.outOfStock') : product.stock}
@@ -122,7 +126,7 @@ export default function InventoryPage() {
   })
 
   const [deleteId, setDeleteId] = useState<string | null>(null)
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const fetchProducts = async () => {
     try {
@@ -350,7 +354,9 @@ export default function InventoryPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-ink-muted block mb-1">Price ($) *</label>
+                  <label className="text-xs text-ink-muted block mb-1">
+                    {language === 'pt' ? 'Preço (R$) *' : 'Price ($) *'}
+                  </label>
                   <input
                     type="number"
                     step="0.01"
