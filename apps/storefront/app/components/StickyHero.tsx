@@ -213,9 +213,9 @@ export function StickyHero() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1] mb-6">
-                <span className="text-ink-subtle font-normal">Tolerâncias</span>
+                <span className="text-ink-subtle font-normal">{t('hero.scroll.p1.line1')}</span>
                 <br />
-                <span className="text-ink font-black">Micrométricas.</span>
+                <span className="text-ink font-black">{t('hero.scroll.p1.line2')}</span>
               </h2>
 
               <p className="text-base text-ink-subtle leading-relaxed">
@@ -239,9 +239,9 @@ export function StickyHero() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1] mb-6">
-                <span className="text-ink-subtle font-normal">Polímeros</span>
+                <span className="text-ink-subtle font-normal">{t('hero.scroll.p2.line1')}</span>
                 <br />
-                <span className="text-ink font-black">e Compósitos.</span>
+                <span className="text-ink font-black">{t('hero.scroll.p2.line2')}</span>
               </h2>
 
               <p className="text-base text-ink-subtle leading-relaxed">
@@ -260,9 +260,9 @@ export function StickyHero() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1] mb-6">
-                <span className="text-ink-subtle font-normal">Manufatura</span>
+                <span className="text-ink-subtle font-normal">{t('hero.scroll.p3.line1')}</span>
                 <br />
-                <span className="text-ink font-black">Automatizada.</span>
+                <span className="text-ink font-black">{t('hero.scroll.p3.line2')}</span>
               </h2>
 
               <p className="text-base text-ink-subtle leading-relaxed">

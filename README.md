@@ -134,6 +134,10 @@ pnpm dev:storefront  # Inicia apenas o Storefront
 
 ## 📈 Histórico de Melhorias Recentes
 
+- **feat(storefront):** Pivot para marketplace B2B e B2C de produtos impressos em 3D (ex: brindes corporativos e drops de mesa), com tradução e gráficos de etapas interativos (How It Works).
+- **feat(storefront):** Substituição do portfólio genérico por uma seção de Bento Grid de Categorias de Produtos e catálogo de materiais de alta performance interativo (Carbon Fiber, TPU, SLA Resin).
+- **feat(a11y):** Implementação de melhorias de acessibilidade WCAG 2.2 no cabeçalho (links semânticos, focus trapping e Escape para fechar no menu móvel) e carrinho/detalhe de produtos baseados em Radix Dialog.
+- **feat(admin-hub & API):** Integração total com o banco de dados via API REST (`/api/products` e `/api/products/[id]`) com CORS, sincronizando o controle do estoque e a listagem dinâmica de produtos ativos.
 - **feat(storefront):** Reestruturação de rotas públicas. A Landing Page agora é servida em `/` e o formulário de orçamento foi movido para `/quote`.
 - **fix(storefront):** Correção de cores estáticas e hexadecimais rígidos na página de catálogo de produtos, melhorando drasticamente o suporte e a legibilidade no Light Mode usando tokens dinâmicos.
 - **feat(admin-hub):** Adicionado atalhos dinâmicos na barra lateral do painel (`Atalhos` -> `Ir para a Loja`, `Ver Catálogo`, `Design System`) que resolvem para as portas corretas localmente e subdomínios em produção.

@@ -29,6 +29,8 @@ import {
   Box,
   Settings,
   Globe,
+  Gift,
+  Sparkles,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -169,76 +171,256 @@ function FeaturesSection() {
 // ---------------------------------------------------------------------------
 // Portfolio Section
 // ---------------------------------------------------------------------------
-function PortfolioSection() {
-  const { t } = useLanguage()
+// ---------------------------------------------------------------------------
+// Product Categories Section (Bento Grid)
+// ---------------------------------------------------------------------------
+function ProductCategoriesSection() {
+  const { language } = useLanguage()
+  const [selectedMaterial, setSelectedMaterial] = React.useState<'cf' | 'tpu' | 'resin'>('cf')
 
-  const portfolio = [
-    { name: 'Aerospace Bracket', category: t('cat.aerospace'), material: 'Titanium CF', time: '48h' },
-    { name: 'Medical Enclosure', category: t('cat.medical'), material: 'ASA', time: '24h' },
-    { name: 'Architectural Model', category: t('cat.design'), material: 'Resin', time: '36h' },
-    { name: 'Drone Frame', category: t('cat.aerospace'), material: 'Carbon Fiber', time: '72h' },
-    { name: 'Custom Prosthetic', category: t('cat.medical'), material: 'Flexible TPU', time: '48h' },
-    { name: 'Gear Housing', category: t('cat.industrial'), material: 'PETG', time: '24h' },
-  ]
+  const materials = {
+    cf: {
+      name: language === 'pt' ? 'Fibra de Carbono (PETG-CF)' : 'Carbon Fiber (PETG-CF)',
+      tag: language === 'pt' ? 'Rigidez Estrutural' : 'Structural Rigidity',
+      strength: '65 MPa',
+      temp: '80°C',
+      tactile: language === 'pt' ? 'Fosco, microtexturizado' : 'Matte, micro-textured',
+      desc: language === 'pt' ? 'Polímero reforçado com 15% de fibras curtas de carbono para componentes de alta carga.' : 'Polymer reinforced with 15% carbon fibers for structural load-bearing components.'
+    },
+    tpu: {
+      name: language === 'pt' ? 'TPU Flexível (95A)' : 'Flexible TPU (95A)',
+      tag: language === 'pt' ? 'Absorção de Impacto' : 'Impact Absorption',
+      strength: '450% Elongation',
+      temp: '60°C',
+      tactile: language === 'pt' ? 'Emborrachado, flexível' : 'Rubberized, flexible',
+      desc: language === 'pt' ? 'Elastômero com excelente resistência à abrasão e alta flexibilidade para amortecedores e grips.' : 'Elastomer with excellent abrasion resistance and flexibility for dampeners and custom grips.'
+    },
+    resin: {
+      name: language === 'pt' ? 'Resina SLA de Alta Definição' : 'High-Detail SLA Resin',
+      tag: language === 'pt' ? 'Resolução Microscópica' : 'Microscopic Resolution',
+      strength: '45 MPa',
+      temp: '50°C',
+      tactile: language === 'pt' ? 'Liso como vidro, ultra detalhado' : 'Glass-smooth, ultra-detailed',
+      desc: language === 'pt' ? 'Polimerização por luz para acabamentos estéticos perfeitos e detalhes de até 25 micrômetros.' : 'Light-cured polymer for pristine aesthetics and fine details down to 25 microns.'
+    }
+  }
 
   return (
-    <section className="py-32 bg-canvas border-y border-border" id="portfolio">
+    <section className="py-32 bg-canvas border-y border-border" id="categories">
       <div className="max-w-screen-xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex items-end justify-between mb-16"
+          className="text-center mb-20"
         >
-          <div>
-            <Badge variant="accent" className="mb-4">{t('portfolio.badge')}</Badge>
-            <h2 className="text-4xl font-bold tracking-tight text-ink">
-              {t('portfolio.title')}
-            </h2>
-          </div>
-          <Button variant="outline" size="md" rightIcon={<ChevronRight className="h-4 w-4" />} asChild>
-            <Link href="/portfolio">{t('portfolio.viewAll')}</Link>
-          </Button>
+          <Badge variant="accent" className="mb-4">
+            {language === 'pt' ? 'Categorias de Produtos' : 'Product Categories'}
+          </Badge>
+          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-ink mb-4">
+            {language === 'pt' ? 'Explore o Nosso Ecossistema 3D' : 'Explore Our 3D Ecosystem'}
+          </h2>
+          <p className="text-lg text-ink-subtle max-w-2xl mx-auto">
+            {language === 'pt' 
+              ? 'Conectando designs curados e personalização avançada com materiais de engenharia de elite.' 
+              : 'Connecting curated designs and advanced customization with elite engineering-grade materials.'}
+          </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {portfolio.map((project, i) => (
-            <motion.div
-              key={project.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-              whileHover={{ y: -3 }}
-              className="group cursor-pointer surface-card overflow-hidden hover:border-accent/20 transition-all duration-200"
-            >
-              {/* Project thumbnail */}
-              <div className="h-48 bg-canvas-deep relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--color-accent-glow)_0%,transparent_70%)]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Settings
-                    className="h-16 w-16 text-border group-hover:text-accent/20 transition-colors duration-300"
-                    strokeWidth={1}
-                  />
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: B2B Corporate Gifts (Span 2 columns on desktop) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -4 }}
+            className="md:col-span-2 group relative overflow-hidden rounded-3xl border border-border bg-surface-0 p-8 flex flex-col justify-between min-h-[360px] shadow-lg transition-all duration-300 hover:border-accent/30"
+          >
+            {/* Background Glow */}
+            <div className="absolute top-0 right-0 w-[240px] h-[240px] bg-accent/5 rounded-full blur-[80px] group-hover:bg-accent/10 transition-all duration-500" />
+            
+            <div className="relative z-10 flex-1 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start">
+                  <Badge variant="accent" className="mb-6">
+                    {language === 'pt' ? 'Corporativo (B2B)' : 'Corporate (B2B)'}
+                  </Badge>
+                  <div className="h-10 w-10 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
+                    <Gift className="h-5 w-5" />
+                  </div>
                 </div>
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <h3 className="text-2xl font-bold text-ink mb-3 group-hover:text-accent transition-colors">
+                  {language === 'pt' ? 'Brindes Corporativos' : 'Corporate Gifts'}
+                </h3>
+                <p className="text-sm text-ink-subtle leading-relaxed max-w-md">
+                  {language === 'pt'
+                    ? 'Organizadores de mesa personalizados com a logomarca da sua empresa, placas comemorativas elegantes e acessórios de escritório exclusivos de alta fidelidade.'
+                    : 'Desktop organizers custom-branded with your company logo, elegant commemorative plaques, and high-fidelity premium office accessories.'}
+                </p>
               </div>
 
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <h3 className="text-sm font-semibold text-ink group-hover:text-accent transition-colors">
-                    {project.name}
-                  </h3>
-                  <Badge variant="accent" size="sm">{project.time}</Badge>
+              <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border/30 pt-6">
+                {[
+                  { label: language === 'pt' ? 'Organizadores' : 'Organizers', val: 'FDM/Resin' },
+                  { label: language === 'pt' ? 'Branding' : 'Branding', val: language === 'pt' ? 'Relevo 3D' : '3D Relief' },
+                  { label: language === 'pt' ? 'Volume' : 'Volume', val: '50-1000+ pcs' }
+                ].map((item, idx) => (
+                  <div key={idx}>
+                    <p className="text-[10px] uppercase font-mono text-ink-muted">{item.label}</p>
+                    <p className="text-xs font-semibold text-ink mt-0.5">{item.val}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 2: B2C Desk Drops (Span 1 column) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -4 }}
+            className="group relative overflow-hidden rounded-3xl border border-border bg-surface-0 p-8 flex flex-col justify-between min-h-[360px] shadow-lg transition-all duration-300 hover:border-accent/30"
+          >
+            {/* Background Glow */}
+            <div className="absolute top-0 right-0 w-[180px] h-[180px] bg-purple-500/5 rounded-full blur-[60px] group-hover:bg-purple-500/10 transition-all duration-500" />
+            
+            <div className="relative z-10 flex-1 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start">
+                  <Badge variant="accent" className="mb-6 bg-purple-500/15 border-purple-500/25 text-purple-400">
+                    {language === 'pt' ? 'Estilo de Vida (B2C)' : 'Lifestyle (B2C)'}
+                  </Badge>
+                  <div className="h-10 w-10 rounded-xl bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-purple-400">
+                    <Sparkles className="h-5 w-5" />
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Badge variant="default" size="sm">{project.category}</Badge>
-                  <Badge variant="default" size="sm">{project.material}</Badge>
+                <h3 className="text-2xl font-bold text-ink mb-3 group-hover:text-purple-400 transition-colors">
+                  {language === 'pt' ? 'Drops de Mesa' : 'Desk Drops'}
+                </h3>
+                <p className="text-sm text-ink-subtle leading-relaxed">
+                  {language === 'pt'
+                    ? 'Vasos geométricos auto-irrigáveis, suportes ergonômicos para smartphones e fidgets mecânicos com movimento suave.'
+                    : 'Self-watering geometric planters, ergonomic phone stands, and tactile mechanical fidget toys with ultra-smooth motion.'}
+                </p>
+              </div>
+
+              <div className="mt-8 grid grid-cols-2 gap-4 border-t border-border/30 pt-6">
+                {[
+                  { label: language === 'pt' ? 'Acabamento' : 'Finish', val: language === 'pt' ? 'Fosco Sedoso' : 'Silk Matte' },
+                  { label: language === 'pt' ? 'Unidades' : 'Units', val: language === 'pt' ? 'Sem Mínimo' : 'No Minimum' }
+                ].map((item, idx) => (
+                  <div key={idx}>
+                    <p className="text-[10px] uppercase font-mono text-ink-muted">{item.label}</p>
+                    <p className="text-xs font-semibold text-ink mt-0.5">{item.val}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 3: Premium Materials Catalog (Span 3 columns - Full Width) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="md:col-span-3 group relative overflow-hidden rounded-3xl border border-border bg-surface-0 p-8 shadow-lg transition-all duration-300 hover:border-accent/20"
+          >
+            {/* Background Glow */}
+            <div className="absolute top-0 right-0 w-[400px] h-[250px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+
+            <div className="flex flex-col lg:flex-row gap-12 items-start relative z-10">
+              {/* Header and Selectors */}
+              <div className="lg:w-2/5 flex flex-col justify-between h-full w-full">
+                <div>
+                  <Badge variant="accent" className="mb-6">
+                    {language === 'pt' ? 'Catálogo de Materiais' : 'Materials Catalog'}
+                  </Badge>
+                  <h3 className="text-2xl font-bold text-ink mb-3">
+                    {language === 'pt' ? 'Materiais de Alta Performance' : 'High-Performance Materials'}
+                  </h3>
+                  <p className="text-sm text-ink-subtle leading-relaxed mb-6">
+                    {language === 'pt'
+                      ? 'Nossos produtos são impressos com polímeros avançados. Selecione um material ao lado para inspecionar as propriedades mecânicas estruturais.'
+                      : 'Our products are printed with engineered polymers. Select a material to inspect its mechanical and structural properties.'}
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3 w-full">
+                  {(['cf', 'tpu', 'resin'] as const).map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setSelectedMaterial(m)}
+                      className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all duration-300 ${
+                        selectedMaterial === m
+                          ? 'border-accent bg-accent/5 ring-1 ring-accent'
+                          : 'border-border bg-surface-1 hover:border-accent/30'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={`h-2.5 w-2.5 rounded-full ${
+                          m === 'cf' ? 'bg-neutral-500' : m === 'tpu' ? 'bg-purple-500' : 'bg-cyan-400'
+                        }`} />
+                        <span className="text-xs font-bold text-ink">
+                          {m === 'cf' ? 'Carbon Fiber (PETG-CF)' : m === 'tpu' ? 'Flexible TPU (95A)' : 'SLA Resin'}
+                        </span>
+                      </div>
+                      <ChevronRight className={`h-4 w-4 transition-transform ${selectedMaterial === m ? 'text-accent translate-x-1' : 'text-ink-muted'}`} />
+                    </button>
+                  ))}
                 </div>
               </div>
-            </motion.div>
-          ))}
+
+              {/* Interactive Detail Pane */}
+              <div className="lg:w-3/5 w-full bg-surface-1 border border-border rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between min-h-[280px]">
+                <div className="flex items-start justify-between border-b border-border/30 pb-4 mb-4">
+                  <div>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent">
+                      {materials[selectedMaterial].tag}
+                    </span>
+                    <h4 className="text-lg font-bold text-ink mt-0.5">
+                      {materials[selectedMaterial].name}
+                    </h4>
+                  </div>
+                  <Badge variant="outline" className="font-mono text-[10px] uppercase text-accent border-accent/20 bg-accent/5">
+                    {selectedMaterial === 'cf' ? 'FDM' : selectedMaterial === 'tpu' ? 'FDM Flex' : 'SLA'}
+                  </Badge>
+                </div>
+
+                <p className="text-xs text-ink-subtle leading-relaxed mb-6">
+                  {materials[selectedMaterial].desc}
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 font-mono text-xs border-t border-border/30 pt-4">
+                  <div>
+                    <span className="text-ink-muted block text-[10px] uppercase tracking-wider">
+                      {language === 'pt' ? 'Resistência:' : 'Strength:'}
+                    </span>
+                    <span className="text-ink font-bold mt-1 block">
+                      {materials[selectedMaterial].strength}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-ink-muted block text-[10px] uppercase tracking-wider">
+                      {language === 'pt' ? 'Deflexão Térmica:' : 'Heat Deflection:'}
+                    </span>
+                    <span className="text-ink font-bold mt-1 block">
+                      {materials[selectedMaterial].temp}
+                    </span>
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <span className="text-ink-muted block text-[10px] uppercase tracking-wider">
+                      {language === 'pt' ? 'Tato/Textura:' : 'Tactile Feel:'}
+                    </span>
+                    <span className="text-ink font-bold mt-1 block">
+                      {materials[selectedMaterial].tactile}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -389,7 +571,7 @@ export default function LandingPage() {
         <BrazilCoverageScroll />
         <StatsSection />
         <FeaturesSection />
-        <PortfolioSection />
+        <ProductCategoriesSection />
         <TestimonialsSection />
         <CTASection />
       </main>

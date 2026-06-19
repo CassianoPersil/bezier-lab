@@ -5,7 +5,7 @@
 // CRUD interface for 3D printing products
 // =============================================================================
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   Button,
@@ -25,7 +25,6 @@ import {
   DialogTitle,
   DialogBody,
   DialogFooter,
-  DialogTrigger,
   useLanguage,
 } from '@bezier-lab/ui'
 import {
@@ -37,17 +36,6 @@ import {
   Package,
   Eye,
 } from 'lucide-react'
-
-// ---------------------------------------------------------------------------
-// Mock data (replace with server fetch)
-// ---------------------------------------------------------------------------
-const mockProducts = [
-  { id: '1', name: 'Titanium Bracket v2', sku: 'TB-002', price: 149.99, stock: 12, status: 'PUBLISHED', category: 'Industrial' },
-  { id: '2', name: 'Precision Nozzle Set', sku: 'PN-007', price: 89.50, stock: 34, status: 'PUBLISHED', category: 'Parts' },
-  { id: '3', name: 'Custom Enclosure Panel', sku: 'CE-015', price: 220.00, stock: 5, status: 'DRAFT', category: 'Enclosures' },
-  { id: '4', name: 'Bearing Housing v3', sku: 'BH-003', price: 67.00, stock: 0, status: 'ARCHIVED', category: 'Industrial' },
-  { id: '5', name: 'Tool Organizer Grid', sku: 'TO-009', price: 45.00, stock: 20, status: 'PUBLISHED', category: 'Accessories' },
-]
 
 const statusVariant: Record<string, any> = {
   PUBLISHED: 'success',
@@ -63,8 +51,8 @@ function ProductRow({
   onEdit,
   onDelete,
 }: {
-  product: typeof mockProducts[0]
-  onEdit: (p: typeof mockProducts[0]) => void
+  product: any
+  onEdit: (p: any) => void
   onDelete: (id: string) => void
 }) {
   const { t } = useLanguage()
@@ -78,7 +66,7 @@ function ProductRow({
           </div>
           <div>
             <p className="text-ink text-sm font-medium">{product.name}</p>
-            <p className="text-xs text-ink-muted font-mono">{product.sku}</p>
+            <p className="text-xs text-ink-muted font-mono">{product.sku || 'N/A'}</p>
           </div>
         </div>
       </TableTd>
@@ -90,15 +78,12 @@ function ProductRow({
         </span>
       </TableTd>
       <TableTd>
-        <Badge variant={statusVariant[product.status]}>{product.status}</Badge>
+        <Badge variant={statusVariant[product.status] || 'default'}>{product.status}</Badge>
       </TableTd>
       <TableTd>
         <div className="flex items-center gap-1">
           <Button variant="ghost" size="icon-sm" onClick={() => onEdit(product)} aria-label="Edit product">
             <Edit2 className="h-3.5 w-3.5" />
-          </Button>
-          <Button variant="ghost" size="icon-sm" aria-label="Preview product">
-            <Eye className="h-3.5 w-3.5" />
           </Button>
           <Button
             variant="ghost"
@@ -119,11 +104,44 @@ function ProductRow({
 // Page
 // ---------------------------------------------------------------------------
 export default function InventoryPage() {
-  const [products, setProducts] = useState(mockProducts)
+  const [products, setProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [editProduct, setEditProduct] = useState<typeof mockProducts[0] | null>(null)
+  
+  // Dialog/Form state
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    id: '',
+    name: '',
+    sku: '',
+    price: 0,
+    stock: 0,
+    status: 'DRAFT',
+    category: 'Industrial',
+    description: '',
+  })
+
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const { t } = useLanguage()
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch('/api/products')
+      if (res.ok) {
+        const data = await res.json()
+        setProducts(data)
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
 
   const filtered = products.filter(
     (p) =>
@@ -131,9 +149,43 @@ export default function InventoryPage() {
       (p.sku ?? '').toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleDelete = (id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id))
-    setDeleteId(null)
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const isEdit = !!formData.id
+      const url = isEdit ? `/api/products/${formData.id}` : '/api/products'
+      const method = isEdit ? 'PUT' : 'POST'
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      if (res.ok) {
+        setIsFormOpen(false)
+        fetchProducts()
+      } else {
+        const errData = await res.json()
+        alert(errData.error || 'Failed to save product')
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch(`/api/products/${id}`, {
+        method: 'DELETE',
+      })
+      if (res.ok) {
+        setDeleteId(null)
+        fetchProducts()
+      } else {
+        alert('Failed to delete product')
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (
@@ -148,7 +200,25 @@ export default function InventoryPage() {
           <p className="text-xs text-ink-muted uppercase tracking-widest mb-1">{t('admin.inventory.management')}</p>
           <h1 className="text-3xl font-bold text-ink tracking-tight">{t('admin.inventory.title')}</h1>
         </div>
-        <Button id="add-product-btn" variant="primary" size="md" leftIcon={<Plus className="h-4 w-4" />}>
+        <Button
+          id="add-product-btn"
+          variant="primary"
+          size="md"
+          leftIcon={<Plus className="h-4 w-4" />}
+          onClick={() => {
+            setFormData({
+              id: '',
+              name: '',
+              sku: '',
+              price: 0,
+              stock: 0,
+              status: 'DRAFT',
+              category: 'Industrial',
+              description: '',
+            })
+            setIsFormOpen(true)
+          }}
+        >
           {t('admin.inventory.addProduct')}
         </Button>
       </motion.div>
@@ -164,9 +234,6 @@ export default function InventoryPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Button variant="outline" size="md" leftIcon={<Filter className="h-4 w-4" />}>
-          {t('admin.inventory.filter')}
-        </Button>
       </div>
 
       {/* Stats bar */}
@@ -202,14 +269,32 @@ export default function InventoryPage() {
             </tr>
           </TableHead>
           <TableBody>
-            {filtered.length === 0 ? (
+            {loading ? (
+              <TableRow>
+                <TableTd colSpan={6} className="text-center py-10 text-ink-muted">
+                  Loading products...
+                </TableTd>
+              </TableRow>
+            ) : filtered.length === 0 ? (
               <TableEmpty message={t('admin.inventory.empty')} />
             ) : (
               filtered.map((product) => (
                 <ProductRow
                   key={product.id}
                   product={product}
-                  onEdit={setEditProduct}
+                  onEdit={(p) => {
+                    setFormData({
+                      id: p.id,
+                      name: p.name,
+                      sku: p.sku || '',
+                      price: p.price,
+                      stock: p.stock,
+                      status: p.status,
+                      category: p.category || 'Industrial',
+                      description: p.description || '',
+                    })
+                    setIsFormOpen(true)
+                  }}
                   onDelete={(id) => setDeleteId(id)}
                 />
               ))
@@ -230,6 +315,112 @@ export default function InventoryPage() {
           </span>
         </TableFooter>
       </motion.div>
+
+      {/* Add/Edit Product dialog */}
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent size="md">
+          <form onSubmit={handleSave}>
+            <DialogHeader>
+              <DialogTitle>
+                {formData.id ? 'Edit Product' : 'Add Product'}
+              </DialogTitle>
+            </DialogHeader>
+            <DialogBody className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-ink-muted block mb-1">Product Name *</label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full bg-surface-2 border border-border p-2 rounded text-sm text-ink focus:outline-none focus:border-accent"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-ink-muted block mb-1">SKU</label>
+                  <input
+                    type="text"
+                    className="w-full bg-surface-2 border border-border p-2 rounded text-sm text-ink focus:outline-none focus:border-accent"
+                    value={formData.sku}
+                    onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-ink-muted block mb-1">Price ($) *</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    className="w-full bg-surface-2 border border-border p-2 rounded text-sm text-ink focus:outline-none focus:border-accent"
+                    value={formData.price}
+                    onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-ink-muted block mb-1">Stock *</label>
+                  <input
+                    type="number"
+                    required
+                    className="w-full bg-surface-2 border border-border p-2 rounded text-sm text-ink focus:outline-none focus:border-accent"
+                    value={formData.stock}
+                    onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-ink-muted block mb-1">Category</label>
+                  <select
+                    className="w-full bg-surface-2 border border-border p-2 rounded text-sm text-ink focus:outline-none focus:border-accent"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  >
+                    <option value="Industrial">Industrial</option>
+                    <option value="Parts">Parts</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Enclosures">Enclosures</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs text-ink-muted block mb-1">Status</label>
+                  <select
+                    className="w-full bg-surface-2 border border-border p-2 rounded text-sm text-ink focus:outline-none focus:border-accent"
+                    value={formData.status}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                  >
+                    <option value="DRAFT">DRAFT (Draft)</option>
+                    <option value="PUBLISHED">PUBLISHED (Active)</option>
+                    <option value="ARCHIVED">ARCHIVED (Archived)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs text-ink-muted block mb-1">Description *</label>
+                <textarea
+                  required
+                  className="w-full bg-surface-2 border border-border p-2 rounded text-sm text-ink focus:outline-none focus:border-accent h-20 resize-none"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
+              </div>
+            </DialogBody>
+            <DialogFooter>
+              <Button type="button" variant="ghost" size="sm" onClick={() => setIsFormOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="primary" size="sm">
+                Save
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Delete confirmation dialog */}
       <Dialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
